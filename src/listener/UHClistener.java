@@ -11,6 +11,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -27,6 +28,8 @@ public class UHClistener implements Listener {
 	public static List<String> ingame = new ArrayList<String>();
 
 	private static UHCmain plugin;
+
+	public static boolean CanDamage = false;
 
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event) {
@@ -73,6 +76,16 @@ public class UHClistener implements Listener {
 			int i = Bukkit.getOnlinePlayers().size();
 			players.sendMessage("§c" + player.getName() + " §ehas quit §a" + i + "§7/§a20");
 		}
+	}
+
+	@EventHandler
+	public void onEntityDamage(EntityDamageEvent event) {
+		if (event.getEntity() instanceof Player) {
+			if (!CanDamage) {
+				event.setCancelled(true);
+			}
+		}
+
 	}
 
 	@EventHandler
