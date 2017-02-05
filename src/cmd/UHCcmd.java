@@ -18,6 +18,7 @@ public class UHCcmd implements CommandExecutor {
 				if (args[0].equalsIgnoreCase("set")) {
 					if (args[1].equalsIgnoreCase("ps")) {
 						if (sender instanceof Player) {
+							sender.sendMessage("A");
 						} else {
 							sender.sendMessage(notPlayer);
 						}
