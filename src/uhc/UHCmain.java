@@ -13,7 +13,7 @@ import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class UHCmain extends JavaPlugin {
-	
+
 	public static final String StatsBaseDirPath = "plugins/UHC/";
 
 	public static final String CoinStatsFilePath = StatsBaseDirPath + "coin.yml";
@@ -23,28 +23,28 @@ public class UHCmain extends JavaPlugin {
 	public static final YamlConfiguration CoinStatsYaml = new YamlConfiguration();
 	public static final YamlConfiguration PlayerStatsYaml = new YamlConfiguration();
 	public static final YamlConfiguration LocationStatsYaml = new YamlConfiguration();
-	
+
 	public static String prefix = "§c[UHC] §r";
-	
+
 	public void onEnable() {
 		this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
-		
+
 		loadCoinStats();
 		loadStats();
 		loadLocation();
 		saveCoinStats();
 		saveStats();
 		saveLocation();
-		
+
 		IronPack();
 	}
-	
+
 	public void onDisable() {
 		saveCoinStats();
 		saveStats();
 		saveLocation();
 	}
-	
+
 	public static void loadCoinStats() {
 		if (!(new File(StatsBaseDirPath)).exists()) {
 			(new File(StatsBaseDirPath)).mkdir();
@@ -164,11 +164,11 @@ public class UHCmain extends JavaPlugin {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void IronPack() {
 		ItemStack iron_ingot = new ItemStack(Material.IRON_INGOT, 10);
 		ShapedRecipe iron_pack = new ShapedRecipe(new ItemStack(iron_ingot)).shape("III", "ICI", "III")
 				.setIngredient('I', Material.IRON_ORE).setIngredient('C', Material.COAL);
-		Bukkit.getServer().addRecipe(iron_pack);
+		Bukkit.addRecipe(iron_pack);
 	}
 }

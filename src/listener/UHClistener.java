@@ -1,6 +1,7 @@
 package listener;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -20,6 +21,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
+import runnable.JoinCountdownRunnable;
+import uhc.GameManager;
 import uhc.UHCmain;
 import uhc.UHCutil;
 
@@ -28,8 +31,6 @@ public class UHClistener implements Listener {
 	public static List<String> ingame = new ArrayList<String>();
 
 	private static UHCmain plugin;
-
-	public static boolean CanDamage = false;
 
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event) {
@@ -57,10 +58,17 @@ public class UHClistener implements Listener {
 		player.setHealth(20);
 		player.setMaxHealth(20);
 		player.setGameMode(GameMode.ADVENTURE);
-		for (Player players : Bukkit.getOnlinePlayers()) {
-			int i = Bukkit.getOnlinePlayers().size();
-			players.sendMessage("§c" + player.getName() + " §ehas joined §a" + i + "§7/§a20");
+		Collection<? extends Player> players = Bukkit.getOnlinePlayers();
+		if (!GameManager.ingame) {
+			Bukkit.broadcastMessage("§c" + player.getName() + " §ehas quit §a" + players.size() + "§7/§a20");
+
+			//20人以上か
+			if (players.size() >= 20) {
+				//20秒のカウントダウンを開始
+				new JoinCountdownRunnable().runTaskTimer(plugin, 20, 20);
+			}
 		}
+
 	}
 
 	@EventHandler
@@ -72,16 +80,19 @@ public class UHClistener implements Listener {
 		player.setHealth(20);
 		player.setMaxHealth(20);
 		player.setGameMode(GameMode.ADVENTURE);
-		for (Player players : Bukkit.getOnlinePlayers()) {
-			int i = Bukkit.getOnlinePlayers().size();
-			players.sendMessage("§c" + player.getName() + " §ehas quit §a" + i + "§7/§a20");
+		Collection<? extends Player> players = Bukkit.getOnlinePlayers();
+		if (!GameManager.ingame) {
+			Bukkit.broadcastMessage("§c" + player.getName() + " §ehas quit §a" + players.size() + "§7/§a20");
+		} else {
+			GameManager.ingame_players.remove(player);
 		}
+
 	}
 
 	@EventHandler
 	public void onEntityDamage(EntityDamageEvent event) {
 		if (event.getEntity() instanceof Player) {
-			if (!CanDamage) {
+			if (GameManager.preparatory) {
 				event.setCancelled(true);
 			}
 		}
@@ -96,6 +107,9 @@ public class UHClistener implements Listener {
 			Location loc = def.getLocation();
 			if (def.getKiller() == null) {
 				return;
+			}
+			if (GameManager.ingame) {
+				GameManager.ingame_players.remove(def);
 			}
 			try {
 				if (def.getLastDamageCause().getEntityType().equals(EntityType.PLAYER)) {
