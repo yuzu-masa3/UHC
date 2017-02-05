@@ -2,6 +2,7 @@ package runnable;
 
 import org.bukkit.scheduler.BukkitRunnable;
 
+import scoreboard.UHCscoreboard;
 import uhc.GameManager;
 
 public class Game10minRunnable extends BukkitRunnable {
@@ -10,6 +11,7 @@ public class Game10minRunnable extends BukkitRunnable {
 
 	public void run() {
 		count++;
+		UHCscoreboard.setCount(UHCscoreboard.getCount() + 1);
 		if (count == 600) {
 			//10分
 			GameManager.preparatory = false;

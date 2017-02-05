@@ -2,6 +2,7 @@ package runnable;
 
 import org.bukkit.scheduler.BukkitRunnable;
 
+import scoreboard.UHCscoreboard;
 import uhc.GameManager;
 
 public class Game50minRunnable extends BukkitRunnable {
@@ -11,6 +12,7 @@ public class Game50minRunnable extends BukkitRunnable {
 	public void run() {
 		count++;
 		if (GameManager.ingame) {
+			UHCscoreboard.setCount(UHCscoreboard.getCount() + 1);
 			//50分なら
 			if (count == 3000) {
 				if(GameManager.ingame_players.size() >= 2) {
