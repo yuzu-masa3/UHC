@@ -20,7 +20,6 @@ public class UHCcmd implements CommandExecutor {
 						if (sender instanceof Player) {
 						} else {
 							sender.sendMessage(notPlayer);
-							sender.sendMessage(notPlayer);
 						}
 					} else {
 					}
