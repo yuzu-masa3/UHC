@@ -4,8 +4,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class UHCmain extends JavaPlugin {
@@ -31,6 +35,8 @@ public class UHCmain extends JavaPlugin {
 		saveCoinStats();
 		saveStats();
 		saveLocation();
+		
+		IronPack();
 	}
 	
 	public void onDisable() {
@@ -157,5 +163,12 @@ public class UHCmain extends JavaPlugin {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void IronPack() {
+		ItemStack iron_ingot = new ItemStack(Material.IRON_INGOT, 10);
+		ShapedRecipe iron_pack = new ShapedRecipe(new ItemStack(iron_ingot)).shape("III", "ICI", "III")
+				.setIngredient('I', Material.IRON_ORE).setIngredient('C', Material.COAL);
+		Bukkit.getServer().addRecipe(iron_pack);
 	}
 }
